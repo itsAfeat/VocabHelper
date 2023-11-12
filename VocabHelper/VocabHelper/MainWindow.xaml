@@ -5,6 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VocabHelper"
         mc:Ignorable="d"
-        Title="Vocab Helper" Height="800" Width="800"
+        Title="Ordsuppe" Height="800" Width="800"
         Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <Grid x:Name="mainGrid" ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" MinWidth="250" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel x:Name="labelPanel" Grid.Row="0" Grid.Column="0" Orientation="Vertical">
+            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="Find the translations of these words" FontSize="14" FontWeight="Bold"/>
+            <Separator></Separator>
+        </StackPanel>
+    </Grid>
 </Window>

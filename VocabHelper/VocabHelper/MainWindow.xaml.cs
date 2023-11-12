@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,12 +24,11 @@ namespace VocabHelper
     public partial class MainWindow : Window
     {
         public MainWindow()
-        {
-            InitializeComponent();
-        }
+        { InitializeComponent(); }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            CSVFile csv = new();
             OpenFileDialog ofd = new()
             {
                 InitialDirectory = "C:\\",
@@ -38,37 +38,32 @@ namespace VocabHelper
             };
 
             if (ofd.ShowDialog() == true)
-            { IO.ReadFile(ofd.FileName); }
+            { csv = new(ofd.FileName); }
+            else
+            { Environment.Exit(0); }
 
             // Ask for grid size
-            int size = int.Parse(Interaction.InputBox("Enter the size of the grid", "Set grid size", "15"));
-
-            // Create grid
-            Random r = new();
-            Grid g = new()
-            { ShowGridLines = true };
-
-            for (int i = 0; i < size; i++)
+            string inputStr = Interaction.InputBox("Enter the size of the grid\n(format: x,y)", "Set grid size", "15,15");
+            if (!string.IsNullOrEmpty(inputStr))
             {
-                g.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star)});
-                g.RowDefinitions.Add(new() { Height = new(1, GridUnitType.Star) });
+                string[] sizeStr = inputStr.Split(',');
+                int sizeX = int.Parse(sizeStr[0]);
+                int sizeY = int.Parse(sizeStr[1]);
 
-                for (int j = 0; j < size; j++)
-                {
-                    TextBlock block = new()
-                    {
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Text = Convert.ToChar(r.Next(65, 91)).ToString()
-                    };
+                Grid soupGrid = new();
+                Wordsoup wordsoup = new(soupGrid, sizeX, sizeY, csv);
 
-                    Grid.SetColumn(block, j);
-                    Grid.SetRow(block, i);
-                    g.Children.Add(block);
-                }
+                this.Title = $"Ordsuppe ({csv.GetLocalName()} -> {csv.GetForeignName()})";
+
+                wordsoup.CreateSoup();
+                wordsoup.FillGridWithWords(labelPanel);
+                Grid.SetRow(soupGrid, 0);
+                Grid.SetColumn(soupGrid, 1);
+
+                mainGrid.Children.Add(soupGrid);
             }
-
-            this.Content = g;
+            else
+            { Environment.Exit(0); }
         }
     }
 }

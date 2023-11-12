@@ -10,15 +10,19 @@ namespace VocabHelper
 {
     public class IO
     {
-        public static void ReadFile(string path)
+        public static string[]? ReadFile(string path)
         {
             if (File.Exists(path))
             {
+                List<string> lines = new();
                 using StreamReader sr = File.OpenText(path);
                 
                 while (!sr.EndOfStream)
-                { Debug.WriteLine(sr.ReadLine()); }
+                { lines.Add(sr.ReadLine()); }
+
+                return lines.ToArray();
             }
+            return null;
         }
     }
 }
