@@ -1,0 +1,28 @@
+﻿<Window x:Class="VocabHelper.SoupInputBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VocabHelper"
+        mc:Ignorable="d"
+        Title="SoupInputBox" Height="235" Width="585" ResizeMode="CanMinimize">
+    <Grid ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock ToolTip="format: x,y" FontWeight="Bold" Grid.Column="0" Grid.Row="0" Text="Enter the size of the grid:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBlock FontWeight="Bold" Grid.Column="0" Grid.Row="1" Text="Enter custom amount of words:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBlock FontWeight="Bold" Grid.Column="0" Grid.Row="2" Text="Enter the size of the grid:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+
+        <TextBox Grid.Column="1" Grid.Row="0"/>
+    </Grid>
+</Window>

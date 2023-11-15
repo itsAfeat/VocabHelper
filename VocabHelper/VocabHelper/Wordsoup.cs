@@ -3,13 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Input;
-using System.Xml;
 
 namespace VocabHelper
 {
@@ -23,7 +20,7 @@ namespace VocabHelper
 
     public class Wordsoup
     {
-        private int sizeX, sizeY;
+        private readonly int sizeX, sizeY;
         private readonly CSVFile file;
 
         private readonly Dictionary<Point, char> usedPointsDict = new();
@@ -31,8 +28,11 @@ namespace VocabHelper
         private readonly Dictionary<TextBlock, TextBlock> blockPairs = new();
 
         private readonly SolidColorBrush pickedColor = new(Color.FromArgb(127, 153, 255, 187));
-        private readonly List<TextBlock> AffectedBlocks = new();
-        private Grid soupGrid;
+        private readonly LinearGradientBrush foundColor = new(Color.FromArgb(127, 0, 230, 77), Color.FromArgb(127, 153, 255, 187), 45.0);
+        private readonly List<TextBlock> affectedBlocks = new();
+        private readonly List<TextBlock> foundWordBlocks = new();
+        private readonly Grid soupGrid;
+
         private TextBlock? StartBlock = null;
 
         public Wordsoup(Grid soupGrid, int sizeX, int sizeY, CSVFile file)
@@ -96,13 +96,13 @@ namespace VocabHelper
                 TextBlock block = (TextBlock)sender;
                 if (block == StartBlock)
                 {
-                    foreach (TextBlock b in AffectedBlocks)
+                    foreach (TextBlock b in affectedBlocks)
                     { b.Background = null; }
                 }
                 else
                 {
                     block.Background = pickedColor;
-                    AffectedBlocks.Add(block);
+                    affectedBlocks.Add(block);
 
                     Point start = new(Grid.GetColumn(StartBlock), Grid.GetRow(StartBlock));
                     Point end = new(Grid.GetColumn(block), Grid.GetRow(block));
@@ -119,16 +119,16 @@ namespace VocabHelper
                     }
                     else
                     {
-                        foreach (TextBlock b in AffectedBlocks)
+                        foreach (TextBlock b in affectedBlocks)
                         { b.Background = null; }
                     }
 
                     StartBlock = null;
-                    Point[] points = new Point[AffectedBlocks.Count];
+                    Point[] points = new Point[affectedBlocks.Count];
                     for (int i = 0; i < points.Length; i++)
                     {
-                        int x = Grid.GetColumn(AffectedBlocks[i]);
-                        int y = Grid.GetRow(AffectedBlocks[i]);
+                        int x = Grid.GetColumn(affectedBlocks[i]);
+                        int y = Grid.GetRow(affectedBlocks[i]);
 
                         points[i] = new Point(x, y);
                     }
@@ -145,18 +145,18 @@ namespace VocabHelper
 
         private void Block_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (AffectedBlocks.Count > 0)
+            if (affectedBlocks.Count > 0)
             {
-                foreach (TextBlock b in AffectedBlocks)
+                foreach (TextBlock b in affectedBlocks)
                 { b.Background = null; }
             }
 
-            AffectedBlocks.Clear();
+            affectedBlocks.Clear();
 
             TextBlock block = (TextBlock)sender;
             block.Background = pickedColor;
 
-            AffectedBlocks.Add(block);
+            affectedBlocks.Add(block);
             StartBlock = block;
         }
 
@@ -296,8 +296,8 @@ namespace VocabHelper
                     block = SwapBlock(block);
                     block.Background = pickedColor;
 
-                    if (!AffectedBlocks.Contains(block))
-                    { AffectedBlocks.Add(block); }
+                    if (!affectedBlocks.Contains(block))
+                    { affectedBlocks.Add(block); }
                 }
             }
             else if (from.Y == to.Y) // Move x
@@ -309,10 +309,17 @@ namespace VocabHelper
                     block = SwapBlock(block);
                     block.Background = pickedColor;
 
-                    if (!AffectedBlocks.Contains(block))
-                    { AffectedBlocks.Add(block); }
+                    if (!affectedBlocks.Contains(block))
+                    { affectedBlocks.Add(block); }
                 }
             }
+        }
+
+        private void ClearAffectedBlocks()
+        {
+            foreach (TextBlock block in affectedBlocks)
+            { block.Background = null; }
+            affectedBlocks.Clear();
         }
 
         private (string?, string?) MarkedCorrectWord(Point[] points)
@@ -331,10 +338,14 @@ namespace VocabHelper
                 if (found)
                 {
                     key = keyPoints;
+                    foreach(TextBlock block in affectedBlocks)
+                    { block.Background = foundColor; foundWordBlocks.Add(block); }
+                    affectedBlocks.Clear();
                     break;
                 }
             }
 
+            if (!found) { ClearAffectedBlocks(); }
             return found ? foreignWordsDict[key] : (null, null);
         }
     }
