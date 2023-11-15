@@ -11,6 +11,8 @@ namespace VocabHelper
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Grid soupGrid;
+
         public MainWindow()
         { InitializeComponent(); }
 
@@ -23,7 +25,7 @@ namespace VocabHelper
             int sizeX = (int)SoupInputBox.SizeX;
             int sizeY = (int)SoupInputBox.SizeY;
 
-            Grid soupGrid = new();
+            soupGrid = new();
             Wordsoup wordsoup = new(soupGrid, sizeX, sizeY, csv, labelPanel);
 
             this.Title = $"Ordsuppe ({csv.GetLocalName()} -> {csv.GetForeignName()})";
@@ -34,6 +36,12 @@ namespace VocabHelper
             Grid.SetColumn(soupGrid, 1);
 
             mainGrid.Children.Add(soupGrid);
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.F1)
+            { soupGrid.ShowGridLines = !soupGrid.ShowGridLines; }
         }
     }
 }

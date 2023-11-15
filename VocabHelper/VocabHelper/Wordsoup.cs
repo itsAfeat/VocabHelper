@@ -47,7 +47,6 @@ namespace VocabHelper
 
         public Grid CreateSoup()
         {
-            soupGrid.ShowGridLines = true;
             Random r = new();
 
             for (int i = 0; i < sizeX; i++)
