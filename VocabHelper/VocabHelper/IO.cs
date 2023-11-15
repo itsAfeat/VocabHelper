@@ -16,9 +16,13 @@ namespace VocabHelper
             {
                 List<string> lines = new();
                 using StreamReader sr = File.OpenText(path);
-                
+
                 while (!sr.EndOfStream)
-                { lines.Add(sr.ReadLine()); }
+                {
+                    string? line = sr.ReadLine();
+                    if (line != null)
+                    { lines.Add(line); }
+                }
 
                 return lines.ToArray();
             }

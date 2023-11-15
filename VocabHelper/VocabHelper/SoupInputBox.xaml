@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VocabHelper"
         mc:Ignorable="d"
-        Title="SoupInputBox" Height="235" Width="585" ResizeMode="CanMinimize">
-    <Grid ShowGridLines="True">
+        Title="Soup parameters" Height="185" Width="425" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Topmost="True" Closed="Window_Closed">
+    <Grid ShowGridLines="False">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.75*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -19,10 +19,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock ToolTip="format: x,y" FontWeight="Bold" Grid.Column="0" Grid.Row="0" Text="Enter the size of the grid:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBlock FontWeight="Bold" Grid.Column="0" Grid.Row="1" Text="Enter custom amount of words:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-        <TextBlock FontWeight="Bold" Grid.Column="0" Grid.Row="2" Text="Enter the size of the grid:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBlock x:Name="sizeLabel" FontWeight="Bold" Grid.Column="0" Grid.Row="0" Text="Size of the grid" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBlock x:Name="amountLabel" FontWeight="Bold" Grid.Column="0" Grid.Row="1" Text="Word amount" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBlock x:Name="fileLabel" FontWeight="Bold" Grid.Column="0" Grid.Row="2" Text="CSV file location" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <TextBlock x:Name="fileLocationLabel" Grid.Column="1" Grid.Row="2" Text="None" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" />
 
-        <TextBox Grid.Column="1" Grid.Row="0"/>
+        <TextBox x:Name="sizeXBox" Text="15" Grid.Column="1" Grid.Row="0" VerticalContentAlignment="Center" VerticalAlignment="Center" Padding="0,2,0,2" Margin="10,0,20,0" PreviewTextInput="TextBox_OnlyNumberCheck" TextChanged="sizeBox_TextChanged"/>
+        <TextBox x:Name="sizeYBox" Text="15" Grid.Column="2" Grid.Row="0" VerticalContentAlignment="Center" VerticalAlignment="Center" Padding="0,2,0,2" Margin="10,0,20,0" PreviewTextInput="TextBox_OnlyNumberCheck" TextChanged="sizeBox_TextChanged"/>
+        <TextBox x:Name="amountBox" ToolTip="Recommended: 10" Text="10" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" VerticalContentAlignment="Center" VerticalAlignment="Center" Padding="0,2,0,2" Margin="10,0,20,0" PreviewTextInput="TextBox_OnlyNumberCheck"/>
+
+        <Button x:Name="pickFileButton" Grid.Column="2" Grid.Row="2" Content="Pick file" VerticalAlignment="Center" HorizontalAlignment="Right" Padding="5,2,5,2" Margin="0,0,20,0" Click="pickFileButton_Click"/>
+        <Button x:Name="createButton" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" Content="Create soup" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="10,5,10,5" Click="createButton_Click"/>
     </Grid>
 </Window>

@@ -22,6 +22,7 @@ namespace VocabHelper
     {
         private readonly int sizeX, sizeY;
         private readonly CSVFile file;
+        private readonly StackPanel localLabelPanel;
 
         private readonly Dictionary<Point, char> usedPointsDict = new();
         private readonly Dictionary<Point[], (string, string)> foreignWordsDict = new();
@@ -35,12 +36,13 @@ namespace VocabHelper
 
         private TextBlock? StartBlock = null;
 
-        public Wordsoup(Grid soupGrid, int sizeX, int sizeY, CSVFile file)
+        public Wordsoup(Grid soupGrid, int sizeX, int sizeY, CSVFile file, StackPanel localLabelPanel)
         {
             this.soupGrid = soupGrid;
             this.sizeX = sizeX;
             this.sizeY = sizeY;
             this.file = file;
+            this.localLabelPanel = localLabelPanel;
         }
 
         public Grid CreateSoup()
@@ -123,6 +125,7 @@ namespace VocabHelper
                         { b.Background = null; }
                     }
 
+
                     StartBlock = null;
                     Point[] points = new Point[affectedBlocks.Count];
                     for (int i = 0; i < points.Length; i++)
@@ -137,8 +140,19 @@ namespace VocabHelper
                     else
                     { points = points.OrderBy(p => p.X).ToArray(); }
 
+
                     (string?, string?) result = MarkedCorrectWord(points);
-                    Debug.WriteLine($"{result.Item1}/{result.Item2}");
+                    if (result != (null, null))
+                    {
+                        foreach (var child in localLabelPanel.Children)
+                        {
+                            if (child is TextBlock childLbl)
+                            {
+                                if (childLbl.Text.ToString().ToLower() == result.Item1.ToLower())
+                                { childLbl.TextDecorations = TextDecorations.Strikethrough; break; }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -150,7 +164,6 @@ namespace VocabHelper
                 foreach (TextBlock b in affectedBlocks)
                 { b.Background = null; }
             }
-
             affectedBlocks.Clear();
 
             TextBlock block = (TextBlock)sender;
@@ -160,17 +173,15 @@ namespace VocabHelper
             StartBlock = block;
         }
 
-        public Grid FillGridWithWords(StackPanel labelPanel)
+        public Grid FillGridWithWords()
         {
             Random r = new();
             string[] localList = file.GetLocalList();
             string[] foreignList = file.GetForeignList();
 
-            int wordAmount = (sizeX + sizeY) / 3;
-            if (MessageBox.Show("Do you want to pick an amount of words in the soup yourself?", "Use custom word amount", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            { wordAmount = int.Parse(Interaction.InputBox($"Enter the desired amount\nRecommemended: {wordAmount}", "Custom word amount", $"{wordAmount}")); }
-            
+            int wordAmount = (int)SoupInputBox.WordAmount;
             int[] usedWords = new int[wordAmount];
+
             for (int i = 0; i < wordAmount; i++)
             {
                 int wordIndex;
@@ -182,15 +193,16 @@ namespace VocabHelper
                 string foreignWord = foreignList[wordIndex].ToUpper();
                 usedWords[i] = wordIndex;
 
-                Label l = new()
+                TextBlock labelTb = new()
                 {
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Center,
-                    Content = $"{localWord[0]}{localWord[1..^0].ToLower()}",
+                    Text = $"{localWord[0]}{localWord[1..^0].ToLower()}",
+                    Padding = new Thickness(10, 5, 0, 0),
                     FontSize = 13,
                     FontWeight = FontWeights.Regular
                 };
-                labelPanel.Children.Add(l);
+                localLabelPanel.Children.Add(labelTb);
 
                 DIRECTION dir = (DIRECTION)r.Next(4);
                 int minX = 0; int maxX = sizeX - 1;
