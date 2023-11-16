@@ -68,13 +68,12 @@ namespace VocabHelper
         private void Window_Closed(object sender, EventArgs e)
         {
             if (SizeX == null || SizeY == null || WordAmount == null || CSVFilePath == null)
-            { Environment.Exit(0); }
+            { Application.Current.Shutdown(); }
         }
 
         private bool IsNumber(string str)
         {
             Regex reg = new("[^0-9]");
-            Debug.WriteLine(reg.Match(str).Value);
             return reg.IsMatch(str);
         }
 

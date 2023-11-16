@@ -29,11 +29,11 @@ namespace VocabHelper.Wordsoup
         private readonly Dictionary<TextBlock, TextBlock> blockPairs = new();
 
         private readonly SolidColorBrush pickedColor = new(Color.FromArgb(127, 153, 255, 187));
-        private readonly LinearGradientBrush foundColor = new(Color.FromArgb(127, 0, 230, 77), Color.FromArgb(127, 153, 255, 187), 45.0);
         private readonly List<TextBlock> affectedBlocks = new();
         private readonly List<TextBlock> foundWordBlocks = new();
         private readonly Grid soupGrid;
 
+        private int wordsFound = 0;
         private TextBlock? StartBlock = null;
 
         public WordsoupMaker(Grid soupGrid, int sizeX, int sizeY, CSVFile file, StackPanel localLabelPanel)
@@ -96,10 +96,7 @@ namespace VocabHelper.Wordsoup
             {
                 TextBlock block = (TextBlock)sender;
                 if (block == StartBlock)
-                {
-                    foreach (TextBlock b in affectedBlocks)
-                    { b.Background = null; }
-                }
+                { ClearAffectedBlocks(true); }
                 else
                 {
                     block.Background = pickedColor;
@@ -119,10 +116,7 @@ namespace VocabHelper.Wordsoup
                         else { FillLine(start, end); }
                     }
                     else
-                    {
-                        foreach (TextBlock b in affectedBlocks)
-                        { b.Background = null; }
-                    }
+                    { ClearAffectedBlocks(false); }
 
 
                     StartBlock = null;
@@ -159,11 +153,7 @@ namespace VocabHelper.Wordsoup
         private void Block_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (affectedBlocks.Count > 0)
-            {
-                foreach (TextBlock b in affectedBlocks)
-                { b.Background = null; }
-            }
-            affectedBlocks.Clear();
+            { ClearAffectedBlocks(true); }
 
             TextBlock block = (TextBlock)sender;
             block.Background = pickedColor;
@@ -263,7 +253,6 @@ namespace VocabHelper.Wordsoup
 
                             if (!usedPointsDict.ContainsKey(p)) { usedPointsDict.Add(p, c); }
                             TextBlock tb = (TextBlock)GetGridElement(p);
-                            tb.Foreground = new SolidColorBrush(Color.FromRgb(255, 0, 0));
                             tb.Text = $"{c}";
                         }
 
@@ -326,11 +315,14 @@ namespace VocabHelper.Wordsoup
             }
         }
 
-        private void ClearAffectedBlocks()
+        private void ClearAffectedBlocks(bool clearList)
         {
             foreach (TextBlock block in affectedBlocks)
-            { block.Background = null; }
-            affectedBlocks.Clear();
+            {
+                if (!foundWordBlocks.Contains(block))
+                { block.Background = null; }
+            }
+            if (clearList) { affectedBlocks.Clear(); }
         }
 
         private (string?, string?) MarkedCorrectWord(Point[] points)
@@ -339,24 +331,47 @@ namespace VocabHelper.Wordsoup
             Point[] key = Array.Empty<Point>();
             foreach (Point[] keyPoints in foreignWordsDict.Keys)
             {
-                found = true;
-                for (int i = 0; i < keyPoints.Length; i++)
+                try
                 {
-                    if (keyPoints[i] != points[i])
-                    { found = false; break; }
-                }
+                    found = true;
+                    for (int i = 0; i < keyPoints.Length; i++)
+                    {
+                        if (keyPoints[i] != points[i])
+                        { found = false; break; }
+                    }
 
-                if (found)
+                    if (found)
+                    {
+                        key = keyPoints;
+                        foreach (TextBlock block in affectedBlocks)
+                        { block.Background = pickedColor; foundWordBlocks.Add(block); }
+                        affectedBlocks.Clear();
+
+                        wordsFound++;
+                        if (wordsFound == foreignWordsDict.Keys.Count)
+                        {
+                            MessageBoxResult result = MessageBox.Show(
+                                "YOU WON!\n:3\n\nDo you want to play again?",
+                                "We got a winner over here",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Question
+                            );
+
+                            if (result == MessageBoxResult.Yes)
+                            { MainWindow.Restart = true; }
+                            Application.Current.MainWindow.Close();
+                        }
+                        break;
+                    }
+                }
+                catch (IndexOutOfRangeException)
                 {
-                    key = keyPoints;
-                    foreach (TextBlock block in affectedBlocks)
-                    { block.Background = foundColor; foundWordBlocks.Add(block); }
-                    affectedBlocks.Clear();
+                    found = false;
                     break;
                 }
             }
 
-            if (!found) { ClearAffectedBlocks(); }
+            if (!found) { ClearAffectedBlocks(true); }
             return found ? foreignWordsDict[key] : (null, null);
         }
     }
