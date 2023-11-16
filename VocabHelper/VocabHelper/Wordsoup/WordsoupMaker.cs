@@ -8,17 +8,17 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Input;
 
-namespace VocabHelper
+namespace VocabHelper.Wordsoup
 {
     enum DIRECTION
     {
-        UP      = 0,
-        DOWN    = 1,
-        LEFT    = 2,
-        RIGHT   = 3
+        UP = 0,
+        DOWN = 1,
+        LEFT = 2,
+        RIGHT = 3
     };
 
-    public class Wordsoup
+    public class WordsoupMaker
     {
         private readonly int sizeX, sizeY;
         private readonly CSVFile file;
@@ -36,7 +36,7 @@ namespace VocabHelper
 
         private TextBlock? StartBlock = null;
 
-        public Wordsoup(Grid soupGrid, int sizeX, int sizeY, CSVFile file, StackPanel localLabelPanel)
+        public WordsoupMaker(Grid soupGrid, int sizeX, int sizeY, CSVFile file, StackPanel localLabelPanel)
         {
             this.soupGrid = soupGrid;
             this.sizeX = sizeX;
@@ -110,13 +110,13 @@ namespace VocabHelper
 
                     if (start.X == end.X)
                     {
-                        if (start.Y > end.Y)    { FillLine(end, start); }
-                        else                    { FillLine(start, end); }
+                        if (start.Y > end.Y) { FillLine(end, start); }
+                        else { FillLine(start, end); }
                     }
                     else if (start.Y == end.Y)
                     {
-                        if (start.X > end.X)    { FillLine(end, start); }
-                        else                    { FillLine(start, end); }
+                        if (start.X > end.X) { FillLine(end, start); }
+                        else { FillLine(start, end); }
                     }
                     else
                     {
@@ -141,7 +141,7 @@ namespace VocabHelper
 
 
                     (string?, string?) result = MarkedCorrectWord(points);
-                    if (result != (null, null))
+                    if (result.Item1 != null)
                     {
                         foreach (var child in localLabelPanel.Children)
                         {
@@ -178,14 +178,14 @@ namespace VocabHelper
             string[] localList = file.GetLocalList();
             string[] foreignList = file.GetForeignList();
 
-            int wordAmount = (int)SoupInputBox.WordAmount;
+            int wordAmount = SoupInputBox.WordAmount != null ? (int)SoupInputBox.WordAmount : 0;
             int[] usedWords = new int[wordAmount];
 
             for (int i = 0; i < wordAmount; i++)
             {
                 int wordIndex;
-                
-                do { wordIndex = r.Next(localList.Length-1); }
+
+                do { wordIndex = r.Next(localList.Length - 1); }
                 while (usedWords.Contains(wordIndex));
 
                 string localWord = localList[wordIndex].ToUpper();
@@ -278,10 +278,10 @@ namespace VocabHelper
 
             return soupGrid;
         }
-        
+
         private UIElement GetGridElement(int column, int row)
         { return soupGrid.Children.Cast<UIElement>().First(e => Grid.GetColumn(e) == column && Grid.GetRow(e) == row); }
-        
+
         private UIElement GetGridElement(Point p)
         { return GetGridElement((int)p.X, (int)p.Y); }
 
@@ -349,7 +349,7 @@ namespace VocabHelper
                 if (found)
                 {
                     key = keyPoints;
-                    foreach(TextBlock block in affectedBlocks)
+                    foreach (TextBlock block in affectedBlocks)
                     { block.Background = foundColor; foundWordBlocks.Add(block); }
                     affectedBlocks.Clear();
                     break;
