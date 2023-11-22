@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VocabHelper"
         mc:Ignorable="d"
-        Title="MainWindow" Width="640" Height="480" WindowStartupLocation="CenterScreen">
+        Title="Vocab Helper" Width="640" Height="480" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
