@@ -39,8 +39,8 @@
                 <Button Content="Three _false" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
-                <Button Content="_Word match" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
-                <Button Content="_Join words" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
+                <Button Content="Word m_atch" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
+                <Button Content="Join word_s" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
             </StackPanel>
         </StackPanel>
 
