@@ -8,7 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\pis.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Crossword\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\pis.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

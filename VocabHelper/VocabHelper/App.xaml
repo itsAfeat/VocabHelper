@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:VocabHelper"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="ResourceDict.xaml"/>
     </Application.Resources>
 </Application>

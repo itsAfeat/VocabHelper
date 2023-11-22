@@ -5,9 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VocabHelper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded">
+        Title="MainWindow" Width="640" Height="480" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+
+        <Rectangle Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="1"/>
+                    <GradientStop Color="#FF99FFBB" Offset="0"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Label Grid.Row="0" Grid.ColumnSpan="2" FontStyle="Italic"
+               Content="{StaticResource strTITLE}" HorizontalAlignment="Center"
+               VerticalAlignment="Center" FontSize="30" FontWeight="SemiBold"
+        />
+
+        <Separator Grid.Row="1" Grid.ColumnSpan="2" Background="Black" Margin="50,0,50,10"/>
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
+            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                <Button x:Name="soupButton" Content="_Wordsoup" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" Click="soupButton_Click"/>
+                <Button x:Name="crossButton" Content="_Crosswords" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold"/>
+                <Button Content="Three _false" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Margin="10,0,0,0">
+                <Button Content="_Word match" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
+                <Button Content="_Join words" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="2" Grid.Column="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="5" Text="{StaticResource strLOREM_5P}" TextWrapping="WrapWithOverflow"/>
+                <Image Grid.Row="1" Grid.Column="0" Margin="5,5,5,20" Source="{DynamicResource bmpPIS}"/>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>

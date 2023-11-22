@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32;
+using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Text.RegularExpressions;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.Win32;
 
 namespace VocabHelper
 {
@@ -68,7 +57,7 @@ namespace VocabHelper
         private void Window_Closed(object sender, EventArgs e)
         {
             if (SizeX == null || SizeY == null || WordAmount == null || CSVFilePath == null)
-            { Application.Current.Shutdown(); }
+            { Application.Current.MainWindow.Close(); }
         }
 
         private bool IsNumber(string str)

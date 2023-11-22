@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace VocabHelper
 {
@@ -27,14 +16,14 @@ namespace VocabHelper
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void soupButton_Click(object sender, RoutedEventArgs e)
         {
             do
             {
                 Restart = false;
                 soupWindow = new();
 
-                Application.Current.MainWindow = soupWindow;                
+                Application.Current.MainWindow = soupWindow;
                 soupWindow.ShowDialog();
             } while (Restart);
         }
