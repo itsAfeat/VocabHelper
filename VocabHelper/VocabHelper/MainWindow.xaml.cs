@@ -1,5 +1,8 @@
-﻿using System.Diagnostics;
+﻿using FontAwesome.Sharp;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 
 namespace VocabHelper
 {
@@ -14,6 +17,7 @@ namespace VocabHelper
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
         private void soupButton_Click(object sender, RoutedEventArgs e)
