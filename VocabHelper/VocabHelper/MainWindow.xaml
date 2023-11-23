@@ -10,6 +10,11 @@
         Icon="{fa:IconSource BookBookmark}"
         Title="Vocab Helper" Width="640" Height="480"
         WindowStartupLocation="CenterScreen" MinWidth="640" MinHeight="480">
+
+    <Window.Resources>
+        <local:LocalizationConverter x:Key="LocalizationConverter"/>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -29,8 +34,8 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Label Grid.Row="0" Grid.ColumnSpan="2" FontStyle="Italic"
-               Content="{StaticResource strTITLE}" HorizontalAlignment="Center"
+        <Label x:Name="titleLabel" Grid.Row="0" Grid.ColumnSpan="2" FontStyle="Italic"
+               Content="{Binding ElementName=titleLabel, Path=Content, Converter={StaticResource LocalizationConverter}}" HorizontalAlignment="Center"
                VerticalAlignment="Center" FontSize="30" FontWeight="SemiBold"
         />
 

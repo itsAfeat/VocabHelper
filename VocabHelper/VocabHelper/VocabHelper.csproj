@@ -8,11 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\pis.jpg" />
+    <Compile Remove="Crossword\**" />
+    <EmbeddedResource Remove="Crossword\**" />
+    <None Remove="Crossword\**" />
+    <Page Remove="Crossword\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Crossword\" />
+    <None Remove="Resources\pis.jpg" />
   </ItemGroup>
 
   <ItemGroup>
