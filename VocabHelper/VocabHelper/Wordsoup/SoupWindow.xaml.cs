@@ -1,12 +1,7 @@
-﻿using Microsoft.VisualBasic;
-using Microsoft.Win32;
-using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using VocabHelper.Wordsoup;
 
-namespace VocabHelper
+namespace VocabHelper.Wordsoup
 {
     /// <summary>
     /// Interaction logic for SoupWindow.xaml
@@ -37,7 +32,7 @@ namespace VocabHelper
                 wordsoup.CreateSoup();
                 wordsoup.FillGridWithWords();
                 Grid.SetRow(soupGrid, 0);
-                Grid.SetColumn(soupGrid, 1);
+                Grid.SetColumn(soupGrid, 2);
 
                 mainGrid.Children.Add(soupGrid);
             }

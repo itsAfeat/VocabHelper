@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace VocabHelper
+namespace VocabHelper.Wordsoup
 {
     /// <summary>
     /// Interaction logic for SoupInputBox.xaml

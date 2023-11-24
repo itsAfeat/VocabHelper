@@ -11,10 +11,6 @@
         Title="Vocab Helper" Width="640" Height="480"
         WindowStartupLocation="CenterScreen" MinWidth="640" MinHeight="480">
 
-    <Window.Resources>
-        <local:LocalizationConverter x:Key="LocalizationConverter"/>
-    </Window.Resources>
-    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -35,7 +31,7 @@
             </Rectangle.Fill>
         </Rectangle>
         <Label x:Name="titleLabel" Grid.Row="0" Grid.ColumnSpan="2" FontStyle="Italic"
-               Content="{Binding ElementName=titleLabel, Path=Content, Converter={StaticResource LocalizationConverter}}" HorizontalAlignment="Center"
+               Content="{StaticResource strTITLE}" HorizontalAlignment="Center"
                VerticalAlignment="Center" FontSize="30" FontWeight="SemiBold"
         />
 
@@ -44,7 +40,7 @@
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
                 <Button x:Name="soupButton" Content="_Wordsoup" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" Click="soupButton_Click"/>
-                <Button x:Name="crossButton" Content="_Crosswords" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold"/>
+                <Button x:Name="crossButton" Content="_Crosswords" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" Click="crossButton_Click"/>
                 <Button Content="Three _false" MinWidth="100" Margin="5" Padding="6,3,6,3" FontWeight="DemiBold" IsEnabled="False"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" Margin="10,0,0,0">
