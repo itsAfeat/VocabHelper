@@ -95,5 +95,27 @@ namespace VocabHelper
             { return CSVDict.Keys.ToArray()[1]; }
             return string.Empty;
         }
+
+        public float GetLetterRating(char letter)
+        {
+            if (letterAmountRatingDict.TryGetValue(letter, out (int, float) value))
+            { return value.Item2; }
+            return -1.0f;
+        }
+
+        public float GetWordRating(string word)
+        {
+            float rating = 0.0f;
+
+            foreach (char letter in word)
+            {
+                if (letterAmountRatingDict.TryGetValue(letter, out (int, float) value))
+                { rating += value.Item2; }
+                else
+                { return -1.0f; }
+            }
+
+            return rating / word.Length;
+        }
     }
 }
