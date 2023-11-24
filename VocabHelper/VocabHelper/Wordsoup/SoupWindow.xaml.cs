@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace VocabHelper.Wordsoup
@@ -21,6 +22,7 @@ namespace VocabHelper.Wordsoup
             if (SoupInputBox.CSVFilePath != null && SoupInputBox.SizeX != null && SoupInputBox.SizeY != null)
             {
                 CSVFile csv = SoupInputBox.CSVFilePath;
+
                 int sizeX = (int)SoupInputBox.SizeX;
                 int sizeY = (int)SoupInputBox.SizeY;
 

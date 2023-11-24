@@ -40,22 +40,25 @@ namespace VocabHelper
             {
                 Dictionary<char, int> letterAmount = new();
                 string[] foreignList = CSVDict[CSVDict.Keys.ToArray()[1]];
-                
+
+                int totalLetters = 0;
                 foreach (string word in foreignList)
                 {
-                    foreach (char letter in word)
+                    foreach (char letter in word.ToUpper())
                     {
                         if (letterAmountRatingDict.TryGetValue(letter, out (int, float) value))
-                        { letterAmountRatingDict[letter] = (value.Item1+1, value.Item2); }
+                        { letterAmountRatingDict[letter] = (value.Item1 + 1, value.Item2); }
                         else
                         { letterAmountRatingDict.Add(letter, (1, 0.0f)); }
+                        
+                        totalLetters++;
                     }
                 }
 
                 foreach (char key in letterAmountRatingDict.Keys)
                 {
                     (int, float) value = letterAmountRatingDict[key];
-                    value.Item2 = (float)Math.Round((float)value.Item1 / letterAmountRatingDict.Values.Count, 2);
+                    value.Item2 = (float)Math.Round((float)value.Item1 / totalLetters, 2);
 
                     letterAmountRatingDict[key] = value;
                 }
@@ -98,7 +101,7 @@ namespace VocabHelper
 
         public float GetLetterRating(char letter)
         {
-            if (letterAmountRatingDict.TryGetValue(letter, out (int, float) value))
+            if (letterAmountRatingDict.TryGetValue(char.ToUpper(letter), out (int, float) value))
             { return value.Item2; }
             return -1.0f;
         }
@@ -106,8 +109,7 @@ namespace VocabHelper
         public float GetWordRating(string word)
         {
             float rating = 0.0f;
-
-            foreach (char letter in word)
+            foreach (char letter in word.ToUpper())
             {
                 if (letterAmountRatingDict.TryGetValue(letter, out (int, float) value))
                 { rating += value.Item2; }
@@ -115,7 +117,7 @@ namespace VocabHelper
                 { return -1.0f; }
             }
 
-            return rating / word.Length;
+            return (float)Math.Round(rating, 2);
         }
     }
 }
